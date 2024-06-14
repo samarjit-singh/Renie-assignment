@@ -1,13 +1,16 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./pages/landing/Landing";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header bg-red-300">
-        <p className="bg-green-300 underline text-sm rotate-90">Hello World</p>
-        <p className="bg-orange-300 w-96">Learn React</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
