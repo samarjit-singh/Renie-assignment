@@ -1,4 +1,21 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
+import { TransactionService } from './transaction.service';
+import { Transaction as TransactionModel } from '@prisma/client';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Controller('transaction')
-export class TransactionController {}
+export class TransactionController {
+  constructor(private readonly transactionsService: TransactionService) {}
+
+  @Post()
+  async createTransaction(
+    @Body() transactionData: CreateTransactionDto,
+  ): Promise<TransactionModel> {
+    return this.transactionsService.createTransaction(transactionData);
+  }
+
+  @Get()
+  async getTransactions(): Promise<TransactionModel[]> {
+    return this.transactionsService.getTransactions();
+  }
+}
