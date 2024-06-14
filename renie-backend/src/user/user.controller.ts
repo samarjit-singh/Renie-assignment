@@ -49,4 +49,19 @@ export class UserController {
       );
     }
   }
+
+  @Get('email/:email')
+  async getUserByEmail(@Param('email') email: string): Promise<UserModel> {
+    try {
+      return await this.userService.getUserByEmail(email);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import HeroImage1 from "../../../assets/hero1.png";
 
 const hero = () => {
@@ -24,9 +25,11 @@ const hero = () => {
             income with Renie Bins.
           </p>
           <div className="flex items-center justify-center lg:justify-start">
-            <button className="mt-10 bg-[#10439F] lg:text-xl text-white font-bold rounded-full w-36 lg:w-44 h-10 lg:h-14 border-b-4 border-b-[#3D3B40] border-r-4 border-r-[#3D3B40] border-t-2 border-t-[#3D3B40] border-l-2 border-l-[#3D3B40]">
-              Recycle
-            </button>
+            <Link to="/register">
+              <button className="mt-10 bg-[#10439F] lg:text-xl text-white font-bold rounded-full w-36 lg:w-44 h-10 lg:h-14 border-b-4 border-b-[#3D3B40] border-r-4 border-r-[#3D3B40] border-t-2 border-t-[#3D3B40] border-l-2 border-l-[#3D3B40]">
+                Recycle
+              </button>
+            </Link>
           </div>
         </div>
         <div className="flex items-center justify-center">
