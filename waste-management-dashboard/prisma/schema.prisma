@@ -15,8 +15,18 @@ datasource db {
 
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String?
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  compartment  String
+  quantity  Float
+  createdAt DateTime @default(now())
 }
 
