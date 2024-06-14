@@ -8,7 +8,7 @@ export class TransactionService {
   constructor(private prisma: PrismaService) {}
 
   async createTransaction(data: CreateTransactionDto): Promise<Transaction> {
-    return this.prisma.transaction.create({
+    const createdTransaction = await this.prisma.transaction.create({
       data: {
         user: {
           connect: { id: data.userId },
@@ -18,6 +18,40 @@ export class TransactionService {
         createdAt: data.createdAt,
       },
     });
+
+    const compartment = data.compartment.toLowerCase();
+    let pointsIncrease = 0;
+
+    switch (compartment) {
+      case 'plastic':
+        pointsIncrease = 10;
+        break;
+      case 'paper':
+        pointsIncrease = 5;
+        break;
+      case 'tetrapak':
+        pointsIncrease = 15;
+        break;
+      case 'cans':
+        pointsIncrease = 25;
+        break;
+      default:
+        pointsIncrease = 0;
+        break;
+    }
+
+    if (pointsIncrease > 0) {
+      await this.prisma.user.update({
+        where: { id: data.userId },
+        data: {
+          points: {
+            increment: pointsIncrease * data.quantity,
+          },
+        },
+      });
+    }
+
+    return createdTransaction;
   }
 
   async getTransactions(): Promise<Transaction[]> {

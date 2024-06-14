@@ -5,6 +5,8 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
@@ -15,7 +17,17 @@ export class UserController {
 
   @Post()
   async createUser(@Body() userData: UserModel): Promise<UserModel> {
-    return this.userService.createUser(userData);
+    try {
+      return await this.userService.createUser(userData);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
@@ -25,6 +37,16 @@ export class UserController {
 
   @Get(':id')
   async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
-    return this.userService.getUserById(id);
+    try {
+      return await this.userService.getUserById(id);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
