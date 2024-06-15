@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Body,
   Param,
   ParseIntPipe,
@@ -54,6 +55,24 @@ export class UserController {
   async getUserByEmail(@Param('email') email: string): Promise<UserModel> {
     try {
       return await this.userService.getUserByEmail(email);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Patch(':id')
+  async updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() userData: Partial<UserModel>,
+  ): Promise<UserModel> {
+    try {
+      return await this.userService.updateUser(id, userData);
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

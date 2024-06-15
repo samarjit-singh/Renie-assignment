@@ -51,4 +51,37 @@ export class UserService {
 
     return user;
   }
+
+  async updateUser(id: number, data: Partial<User>): Promise<User> {
+    const existingUser = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (data.name || data.email) {
+      const userConflict = await this.prisma.user.findFirst({
+        where: {
+          OR: [
+            { name: data.name ?? undefined },
+            { email: data.email ?? undefined },
+          ],
+          NOT: { id },
+        },
+      });
+
+      if (userConflict) {
+        if (userConflict.name === data.name) {
+          throw new ConflictException('Username already exists');
+        } else if (userConflict.email === data.email) {
+          throw new ConflictException('Email already exists');
+        }
+      }
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data,
+    });
+  }
 }
