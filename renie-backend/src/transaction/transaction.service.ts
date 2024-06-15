@@ -57,4 +57,13 @@ export class TransactionService {
   async getTransactions(): Promise<Transaction[]> {
     return this.prisma.transaction.findMany();
   }
+
+  async getTransactionsByUserId(userId: string): Promise<Transaction[]> {
+    const numericUserId = parseInt(userId, 10);
+    return this.prisma.transaction.findMany({
+      where: {
+        userId: numericUserId,
+      },
+    });
+  }
 }
