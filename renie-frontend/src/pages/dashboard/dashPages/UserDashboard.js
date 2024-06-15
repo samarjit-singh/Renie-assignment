@@ -16,11 +16,7 @@ const UserDashboard = () => {
   });
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    console.log("Quantities", quantities);
-    console.log("Line Chart Data", chartData);
-  }, [chartData]);
+  const [userPoints, setUserPoints] = useState("");
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -29,6 +25,26 @@ const UserDashboard = () => {
       setUserId(parsedUserData.id);
     }
   }, []);
+
+  useEffect(() => {
+    const fetchUserPersonalData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/user/${userId}`
+        );
+
+        const points = response.data?.points;
+        setUserPoints(points);
+        console.log("user points", userPoints);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserPersonalData();
+    }
+  }, [userId, userPoints]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -83,16 +99,26 @@ const UserDashboard = () => {
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md font-mono">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 ml-2">User Dashboard</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-4 ml-2">
+        User Dashboard
+      </h1>
 
       <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
         <div className="flex items-center">
           <span className="text-3xl mr-2">📈</span>
-          <p className="text-lg">Number of Transactions you have made:</p>
+          <p className="text-lg">Number of Transactions:</p>
         </div>
         <p className="text-3xl font-bold text-gray-700">
           {transactions.length}
         </p>
+      </div>
+
+      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="text-3xl mr-2">🪙</span>
+          <p className="text-lg">Points Earned:</p>
+        </div>
+        <p className="text-3xl font-bold text-gray-700">{userPoints}</p>
       </div>
 
       <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">

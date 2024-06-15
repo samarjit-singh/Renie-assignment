@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = ({ isSidebarOpen, setSidebarOpen }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
 
@@ -18,6 +20,11 @@ const Navigation = ({ isSidebarOpen, setSidebarOpen }) => {
 
   const handleToggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userData");
+    navigate("/");
   };
 
   return (
@@ -70,6 +77,15 @@ const Navigation = ({ isSidebarOpen, setSidebarOpen }) => {
           <span className="flex gap-x-3">
             <p className="h-5 w-5 ml-4">⚙️</p>
             <p className="font-bold">Settings</p>
+          </span>
+        </div>
+        <div
+          className="flex items-center justify-between h-8 bg-gray-100 cursor-pointer"
+          onClick={handleLogout}
+        >
+          <span className="flex gap-x-3">
+            <p className="h-5 w-5 ml-4">👋🏽</p>
+            <p className="font-bold">Logout</p>
           </span>
         </div>
       </aside>

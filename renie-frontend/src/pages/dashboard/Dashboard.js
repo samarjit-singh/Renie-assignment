@@ -40,6 +40,7 @@ const Dashboard = () => {
         />
 
         <Routes>
+          <Route path="/" element={<Recycle />} />
           <Route path="/recycle" element={<Recycle />} />
           <Route path="/userdashboard" element={<UserDashboard />} />
         </Routes>
