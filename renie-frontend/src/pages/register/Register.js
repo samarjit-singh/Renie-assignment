@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -18,25 +20,27 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isNewUser) {
-      try {
-        const response = await axios.post("http://localhost:5000/user", {
+    try {
+      let response;
+      if (isNewUser) {
+        response = await axios.post("http://localhost:5000/user", {
           email: formData.email,
           name: formData.name,
         });
-        console.log("New User Registration Response:", response.data);
-      } catch (error) {
-        console.error("Error registering new user:", error);
-      }
-    } else {
-      try {
-        const response = await axios.get(
+      } else {
+        response = await axios.get(
           `http://localhost:5000/user/email/${formData.email}`
         );
-        console.log("Existing User Response:", response.data);
-      } catch (error) {
-        console.error("Error fetching existing user:", error);
       }
+      console.log("API Response:", response.data);
+
+      localStorage.setItem("userData", JSON.stringify(response.data));
+
+      if (response.status === 200 || response.status === 201) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("API Error:", error);
     }
   };
 

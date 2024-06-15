@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 
-const navigation = ({ isSidebarOpen, setSidebarOpen }) => {
+const Navigation = ({ isSidebarOpen, setSidebarOpen }) => {
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      setEmail(parsedUserData.email);
+      setUserName(parsedUserData.name);
+    }
+  }, []);
+
   const handleToggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -23,9 +35,7 @@ const navigation = ({ isSidebarOpen, setSidebarOpen }) => {
             <div className="gap-x-2 flex items-center max-w-[200px]">
               <CgProfile className="h-5 w-5 ml-4" />
 
-              <span className="text-start font-bold">
-                Samarjit@bennett.in
-              </span>
+              <span className="text-start font-bold">{email}</span>
             </div>
           </div>
 
@@ -42,12 +52,14 @@ const navigation = ({ isSidebarOpen, setSidebarOpen }) => {
             </span>
           </div>
         </Link>
-        <div className="flex items-center justify-between h-8 hover:bg-gray-100 cursor-pointer">
-          <span className="flex gap-x-3">
-            <p className="h-5 w-5 ml-4">📱</p>
-            <p className="font-bold">Username Dashboard</p>
-          </span>
-        </div>
+        <Link to="/dashboard/userdashboard">
+          <div className="flex items-center justify-between h-8 hover:bg-gray-100 cursor-pointer">
+            <span className="flex gap-x-3">
+              <p className="h-5 w-5 ml-4">📱</p>
+              <p className="font-bold">{userName} Dashboard</p>
+            </span>
+          </div>
+        </Link>
         <div className="flex items-center justify-between h-8 hover:bg-gray-100 cursor-pointer">
           <span className="flex gap-x-3">
             <p className="h-5 w-5 ml-4">🧑🏽‍💻</p>
@@ -65,4 +77,4 @@ const navigation = ({ isSidebarOpen, setSidebarOpen }) => {
   );
 };
 
-export default navigation;
+export default Navigation;

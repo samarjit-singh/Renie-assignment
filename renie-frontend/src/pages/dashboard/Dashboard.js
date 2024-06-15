@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Navigation from "./_components/navigation";
 import { BiSolidFoodMenu } from "react-icons/bi";
-import { CgProfile } from "react-icons/cg";
+import Recycle from "./dashPages/Recycle";
+import UserDashboard from "./dashPages/UserDashboard";
+import { Routes, Route } from "react-router-dom";
 
 const Dashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -36,7 +38,11 @@ const Dashboard = () => {
           className="h-6 w-6 cursor-pointer absolute top-5 left-1 lg:hidden"
           onClick={toggleSidebar}
         />
-        <p>Hello World</p>
+
+        <Routes>
+          <Route path="/recycle" element={<Recycle />} />
+          <Route path="/userdashboard" element={<UserDashboard />} />
+        </Routes>
       </main>
     </div>
   );
