@@ -4,6 +4,7 @@ import PublicUserLineChart from "../_components/PublicUserLineChart";
 import { format } from "date-fns";
 import LineChart from "../_components/LineChart";
 import BarChart from "../_components/BarChart";
+import DashboardCard from "../_components/DashboardCard";
 
 const PublicDashboard = () => {
   const [userData, setuserData] = useState([]);
@@ -93,75 +94,42 @@ const PublicDashboard = () => {
         Public Dashboard
       </h1>
 
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🧑🏽‍💼</span>
-          <p className="text-lg">Number of Users:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{userData.length}</p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🧑🏽💫</span>
-          <p className="text-lg">User with Maximum Points:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">
-          {maxPointsUser?.name} {maxPointsUser?.points}
-        </p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">📈</span>
-          <p className="text-lg">Number of Transactions:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">
-          {transactions.length}
-        </p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🥤</span>
-          <p className="text-lg">Total Plastic Quantity:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{quantities.plastic}</p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">📄</span>
-          <p className="text-lg">Total Paper Quantity:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{quantities.paper}</p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🥫</span>
-          <p className="text-lg">Total Cans Quantity:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{quantities.cans}</p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🧃</span>
-          <p className="text-lg">Total TetraPack Quantity:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">
-          {quantities.tetrapak}
-        </p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">📊</span>
-          <p className="text-lg">Total Quantity:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{totalQuantity}</p>
-      </div>
+      <DashboardCard
+        icon="🧑🏽‍💼"
+        label="Number of Users"
+        value={userData.length}
+      />
+      <DashboardCard
+        icon="🧑🏽💫"
+        label="User with Maximum Points"
+        value={`${maxPointsUser?.name} ${maxPointsUser?.points}`}
+      />
+      <DashboardCard
+        icon="📈"
+        label="Number of Transactions"
+        value={transactions.length}
+      />
+      <DashboardCard
+        icon="🥤"
+        label="Total Plastic Quantity"
+        value={quantities.plastic}
+      />
+      <DashboardCard
+        icon="📄"
+        label="Total Paper Quantity"
+        value={quantities.paper}
+      />
+      <DashboardCard
+        icon="🥫"
+        label="Total Cans Quantity"
+        value={quantities.cans}
+      />
+      <DashboardCard
+        icon="🧃"
+        label="Total TetraPack Quantity"
+        value={quantities.tetrapak}
+      />
+      <DashboardCard icon="📊" label="Total Quantity" value={totalQuantity} />
 
       <div className="mt-8">
         <div className="mb-4">
