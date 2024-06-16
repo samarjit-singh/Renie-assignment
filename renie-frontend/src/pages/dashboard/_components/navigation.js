@@ -73,12 +73,14 @@ const Navigation = ({ isSidebarOpen, setSidebarOpen }) => {
             <p className="font-bold">Public Dashboard</p>
           </span>
         </div>
-        <div className="flex items-center justify-between h-8 hover:bg-gray-100 cursor-pointer">
-          <span className="flex gap-x-3">
-            <p className="h-5 w-5 ml-4">⚙️</p>
-            <p className="font-bold">Settings</p>
-          </span>
-        </div>
+        <Link to="/dashboard/settings">
+          <div className="flex items-center justify-between h-8 hover:bg-gray-100 cursor-pointer">
+            <span className="flex gap-x-3">
+              <p className="h-5 w-5 ml-4">⚙️</p>
+              <p className="font-bold">Settings</p>
+            </span>
+          </div>
+        </Link>
         <div
           className="flex items-center justify-between h-8 bg-gray-100 cursor-pointer"
           onClick={handleLogout}
