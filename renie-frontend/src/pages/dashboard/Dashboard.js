@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Recycle from "./dashPages/Recycle";
 import UserDashboard from "./dashPages/UserDashboard";
 import Settings from "./dashPages/Settings";
+import PublicDashboard from "./dashPages/PublicDashboard";
 
 const Dashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -45,6 +46,7 @@ const Dashboard = () => {
           <Route path="/recycle" element={<Recycle />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/userdashboard" element={<UserDashboard />} />
+          <Route path="/publicdashboard" element={<PublicDashboard />} />
         </Routes>
       </main>
     </div>

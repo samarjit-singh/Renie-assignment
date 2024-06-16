@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import PublicUserLineChart from "../_components/PublicUserLineChart";
+import { format } from "date-fns";
 import LineChart from "../_components/LineChart";
 import BarChart from "../_components/BarChart";
-import { format } from "date-fns";
 
-const UserDashboard = () => {
-  const [userId, setUserId] = useState("");
+const PublicDashboard = () => {
+  const [userData, setuserData] = useState([]);
+  const [maxPointsUser, setMaxPointsUser] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [quantities, setQuantities] = useState({
     plastic: 0,
@@ -15,42 +17,33 @@ const UserDashboard = () => {
   });
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [chartData, setChartData] = useState([]);
-  const [userPoints, setUserPoints] = useState("");
 
   useEffect(() => {
-    const userData = localStorage.getItem("userData");
-    if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      setUserId(parsedUserData.id);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchUserPersonalData = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/user/${userId}`
-        );
+        const response = await axios.get(`http://localhost:5000/user`);
+        setuserData(response.data);
 
-        const points = response.data?.points;
-        setUserPoints(points);
-        console.log("user points", userPoints);
+        if (response.data.length > 0) {
+          const userWithMaxPoints = response.data.reduce(
+            (max, user) => (user.points > max.points ? user : max),
+            response.data[0]
+          );
+
+          setMaxPointsUser(userWithMaxPoints);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    if (userId) {
-      fetchUserPersonalData();
-    }
-  }, [userId, userPoints]);
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/transaction/user/${userId}`
-        );
+        const response = await axios.get(`http://localhost:5000/transaction`);
         setTransactions(response.data);
 
         const quantities = response.data.reduce(
@@ -91,16 +84,32 @@ const UserDashboard = () => {
       }
     };
 
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
+    fetchUserData();
+  }, []);
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md font-mono">
       <h1 className="text-2xl font-bold text-gray-800 mb-4 ml-2">
-        User Dashboard
+        Public Dashboard
       </h1>
+
+      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="text-3xl mr-2">🧑🏽‍💼</span>
+          <p className="text-lg">Number of Users:</p>
+        </div>
+        <p className="text-3xl font-bold text-gray-700">{userData.length}</p>
+      </div>
+
+      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="text-3xl mr-2">🧑🏽💫</span>
+          <p className="text-lg">User with Maximum Points:</p>
+        </div>
+        <p className="text-3xl font-bold text-gray-700">
+          {maxPointsUser?.name} {maxPointsUser?.points}
+        </p>
+      </div>
 
       <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
         <div className="flex items-center">
@@ -110,14 +119,6 @@ const UserDashboard = () => {
         <p className="text-3xl font-bold text-gray-700">
           {transactions.length}
         </p>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-3xl mr-2">🪙</span>
-          <p className="text-lg">Points Earned:</p>
-        </div>
-        <p className="text-3xl font-bold text-gray-700">{userPoints}</p>
       </div>
 
       <div className="bg-white rounded-lg p-4 mb-4 flex items-center justify-between">
@@ -165,6 +166,12 @@ const UserDashboard = () => {
       <div className="mt-8">
         <div className="mb-4">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            Daily count of new users joining the platform
+          </h2>
+          <PublicUserLineChart userData={userData} />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">
             Material Quantities
           </h2>
           <BarChart quantities={quantities} />
@@ -180,4 +187,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default PublicDashboard;

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useStateProvider } from "../../context/StateContext";
-import { reducerCases } from "../../context/constants";
 import axios from "axios";
 
 const Register = () => {
-  const [{ userName, userEmail }, dispatch] = useStateProvider();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -38,14 +35,6 @@ const Register = () => {
       console.log("API Response:", response.data);
 
       localStorage.setItem("userData", JSON.stringify(response.data));
-      dispatch({
-        type: reducerCases.SET_USER_NAME,
-        userName: response.data.name,
-      });
-      dispatch({
-        type: reducerCases.SET_USER_EMAIL,
-        userEmail: response.data.email,
-      });
 
       if (response.status === 200 || response.status === 201) {
         navigate("/dashboard");
