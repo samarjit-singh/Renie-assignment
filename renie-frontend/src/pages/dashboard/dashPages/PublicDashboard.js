@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
 import axios from "axios";
 import PublicUserLineChart from "../_components/PublicUserLineChart";
-import { format } from "date-fns";
 import LineChart from "../_components/LineChart";
 import BarChart from "../_components/BarChart";
 import DashboardCard from "../_components/DashboardCard";
+import { userRoute } from "../../../utils/ApiRoutes";
+import { transactionRoute } from "../../../utils/ApiRoutes";
 
 const PublicDashboard = () => {
   const [userData, setuserData] = useState([]);
@@ -22,7 +24,7 @@ const PublicDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/user`);
+        const response = await axios.get(userRoute);
         setuserData(response.data);
 
         if (response.data.length > 0) {
@@ -44,7 +46,7 @@ const PublicDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/transaction`);
+        const response = await axios.get(transactionRoute);
         setTransactions(response.data);
 
         const quantities = response.data.reduce(

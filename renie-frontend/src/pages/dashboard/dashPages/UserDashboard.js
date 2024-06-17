@@ -4,6 +4,8 @@ import LineChart from "../_components/LineChart";
 import BarChart from "../_components/BarChart";
 import DashboardCard from "../_components/DashboardCard";
 import { format } from "date-fns";
+import { userRoute } from "../../../utils/ApiRoutes";
+import { transactionRoute } from "../../../utils/ApiRoutes";
 
 const UserDashboard = () => {
   const [userId, setUserId] = useState("");
@@ -29,9 +31,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchUserPersonalData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/user/${userId}`
-        );
+        const response = await axios.get(`${userRoute}/${userId}`);
 
         const points = response.data?.points;
         setUserPoints(points);
@@ -49,9 +49,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/transaction/user/${userId}`
-        );
+        const response = await axios.get(`${transactionRoute}/user/${userId}`);
         setTransactions(response.data);
 
         const quantities = response.data.reduce(

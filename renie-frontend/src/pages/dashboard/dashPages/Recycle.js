@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import confetti from "canvas-confetti";
+import { transactionRoute } from "../../../utils/ApiRoutes";
 
 const Recycle = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ const Recycle = () => {
   const [userId, setUserId] = useState("");
   const [compartment, setCompartment] = useState("");
   const [quantity, setQuantity] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -45,11 +47,10 @@ const Recycle = () => {
       quantity: parseInt(quantity, 10),
     };
 
+    setLoading(true);
+
     try {
-      const response = await axios.post(
-        "http://localhost:5000/transaction",
-        data
-      );
+      const response = await axios.post(transactionRoute, data);
       if (response.status === 201) {
         console.log("Transaction successful");
         setCompartment("");
@@ -60,6 +61,8 @@ const Recycle = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,8 +151,9 @@ const Recycle = () => {
               <button
                 type="submit"
                 className="w-full sm:w-40 h-10 mx-auto mt-12 rounded-md border-2 border-black bg-white shadow-[4px_4px_black] text-lg font-semibold text-gray-800 cursor-pointer active:shadow-none active:translate-x-1 active:translate-y-1"
+                disabled={loading}
               >
-                Submit
+                {loading ? "Submitting..." : "Submit"}
               </button>
             </div>
           </form>

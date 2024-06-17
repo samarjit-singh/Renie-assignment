@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { userRoute } from "../../../utils/ApiRoutes";
 
 const Settings = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -27,8 +29,10 @@ const Settings = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await fetch(`http://localhost:5000/user/${userId}`, {
+      const response = await fetch(`${userRoute}/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -47,10 +51,15 @@ const Settings = () => {
         setUserData(updatedUserData);
 
         alert("Update successful");
+
+        setName("");
+        setEmail("");
       }
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while updating the user");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,8 +102,9 @@ const Settings = () => {
                 <button
                   type="submit"
                   className="w-full sm:w-40 h-10 mx-auto mt-12 rounded-md border-2 border-black bg-white shadow-[4px_4px_black] text-lg font-semibold text-gray-800 cursor-pointer active:shadow-none active:translate-x-1 active:translate-y-1"
+                  disabled={loading}
                 >
-                  Submit
+                  {loading ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </form>

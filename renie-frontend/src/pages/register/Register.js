@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { userRoute } from "../../utils/ApiRoutes";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -23,16 +24,13 @@ const Register = () => {
     try {
       let response;
       if (isNewUser) {
-        response = await axios.post("http://localhost:5000/user", {
+        response = await axios.post(userRoute, {
           email: formData.email,
           name: formData.name,
         });
       } else {
-        response = await axios.get(
-          `http://localhost:5000/user/email/${formData.email}`
-        );
+        response = await axios.get(`${userRoute}/email/${formData.email}`);
       }
-      console.log("API Response:", response.data);
 
       localStorage.setItem("userData", JSON.stringify(response.data));
 
