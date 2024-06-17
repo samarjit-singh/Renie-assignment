@@ -25,10 +25,12 @@ const PublicUserLineChart = ({ userData }) => {
         return acc;
       }, {});
 
-      const formattedChartData = Object.keys(groupedData).map((date) => ({
-        date,
-        count: groupedData[date],
-      }));
+      const formattedChartData = Object.keys(groupedData)
+        .map((date) => ({
+          date,
+          count: groupedData[date],
+        }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       setChartData(formattedChartData);
     }

@@ -10,6 +10,7 @@ const Register = () => {
     name: "",
   });
   const [isNewUser, setIsNewUser] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +22,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     try {
       let response;
       if (isNewUser) {
@@ -48,6 +52,8 @@ const Register = () => {
       } else {
         alert("An unexpected error occurred.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +118,7 @@ const Register = () => {
           <button
             type="submit"
             className="bg-[#7AB2B2] text-white py-2 px-4 rounded-md cursor-pointer hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-200"
+            disabled={loading}
           >
             Continue
           </button>
