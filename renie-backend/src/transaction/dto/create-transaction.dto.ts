@@ -1,8 +1,8 @@
 import { IsInt, IsString, IsNumber, IsDate } from 'class-validator';
 
 export class CreateTransactionDto {
-  @IsInt()
-  userId: number;
+  @IsString()
+  userId: string;
 
   @IsString()
   compartment: string;

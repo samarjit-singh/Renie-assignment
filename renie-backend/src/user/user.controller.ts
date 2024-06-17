@@ -37,7 +37,7 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserModel> {
+  async getUserById(@Param('id') id: string): Promise<UserModel> {
     try {
       return await this.userService.getUserById(id);
     } catch (error) {
@@ -68,7 +68,7 @@ export class UserController {
 
   @Patch(':id')
   async updateUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() userData: Partial<UserModel>,
   ): Promise<UserModel> {
     try {

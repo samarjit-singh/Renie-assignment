@@ -32,7 +32,7 @@ export class UserService {
     return this.prisma.user.findMany();
   }
 
-  async getUserById(id: number): Promise<User> {
+  async getUserById(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
     if (!user) {
@@ -52,7 +52,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: number, data: Partial<User>): Promise<User> {
+  async updateUser(id: string, data: Partial<User>): Promise<User> {
     const existingUser = await this.prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {

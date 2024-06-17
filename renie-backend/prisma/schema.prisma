@@ -9,25 +9,25 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 
 model User {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   email        String   @unique
   name         String?
   transactions Transaction[]
   points       Int      @default(0)
-  createdAt DateTime @default(now())
+  createdAt    DateTime @default(now())
 }
 
 model Transaction {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
   compartment String
-  quantity  Float
-  createdAt DateTime @default(now())
+  quantity    Float
+  createdAt   DateTime @default(now())
 }
