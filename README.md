@@ -2,7 +2,7 @@
 
 ## Overview
 
-Renie Assignment is a full-stack application designed to manage and track recycling activities.
+Renie Assignment is a full-stack application designed to track recycling activities.
 
 ## Live Demo
 
